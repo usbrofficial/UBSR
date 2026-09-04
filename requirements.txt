@@ -1,0 +1,2 @@
+# PyGObject (python3-gi), GTK 4 and libadwaita come from the system packages, see install.sh.
+anthropic>=1.0
