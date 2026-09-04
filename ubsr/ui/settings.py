@@ -6,8 +6,8 @@ import threading
 
 from gi.repository import Adw, GLib, Gtk
 
-from mirage.ai import AIError, ChatMessage, make_backend
-from mirage.ui.widgets import confirm, entry_row
+from ubsr.ai import AIError, ChatMessage, make_backend
+from ubsr.ui.widgets import confirm, entry_row
 
 BACKENDS = [("anthropic", "Claude (Anthropic API)"), ("openai_compat", "Local / OpenAI-compatible server")]
 EFFORTS = ["low", "medium", "high"]

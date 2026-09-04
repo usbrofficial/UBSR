@@ -19,12 +19,12 @@ from typing import Callable, Optional
 
 from gi.repository import GLib, GObject
 
-from mirage import prompts
-from mirage.ai import AIError, ChatMessage, NotConfiguredError, RefusalError, extract_json, make_backend
-from mirage.ai.imagegen import generate_image
-from mirage.art import render_post_art
-from mirage.models import Comment, Persona, Post
-from mirage.personas import normalize_persona
+from ubsr import prompts
+from ubsr.ai import AIError, ChatMessage, NotConfiguredError, RefusalError, extract_json, make_backend
+from ubsr.ai.imagegen import generate_image
+from ubsr.art import render_post_art
+from ubsr.models import Comment, Persona, Post
+from ubsr.personas import normalize_persona
 
 log = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class World(GObject.Object):
         self.settings = settings
         self.media_dir = Path(media_dir)
         self.time_scale = time_scale
-        self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="mirage-ai")
+        self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="ubsr-ai")
         self._timers: list[tuple[float, int, Callable, tuple]] = []
         self._timer_seq = itertools.count()
         self._lock = threading.Lock()
@@ -96,7 +96,7 @@ class World(GObject.Object):
         if self._thread:
             return
         self._stop.clear()
-        self._thread = threading.Thread(target=self._loop, name="mirage-world", daemon=True)
+        self._thread = threading.Thread(target=self._loop, name="ubsr-world", daemon=True)
         self._thread.start()
 
     def stop(self) -> None:

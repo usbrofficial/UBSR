@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from gi.repository import Gtk
 
-from mirage.ui.widgets import PostCard, clamp, clear_box, label, scrolled
+from ubsr.ui.widgets import PostCard, clamp, clear_box, label, scrolled
 
 
 class PostDetailPage(Gtk.Box):
@@ -28,7 +28,7 @@ class PostDetailPage(Gtk.Box):
         self.entry = Gtk.Entry(placeholder_text="Add a comment…", hexpand=True)
         self.entry.connect("activate", self._send)
         entry_bar.append(self.entry)
-        send = Gtk.Button(icon_name="mail-send-symbolic")
+        send = Gtk.Button(label="Post")
         send.add_css_class("suggested-action")
         send.connect("clicked", self._send)
         entry_bar.append(send)

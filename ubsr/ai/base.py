@@ -76,7 +76,7 @@ def make_backend(settings) -> Backend:
         key = settings.anthropic_key()
         if not key:
             raise NotConfiguredError("Add your Anthropic API key in Preferences to bring the AI users to life.")
-        from mirage.ai.anthropic_backend import AnthropicBackend
+        from ubsr.ai.anthropic_backend import AnthropicBackend
 
         return AnthropicBackend(
             api_key=key,
@@ -88,7 +88,7 @@ def make_backend(settings) -> Backend:
         model = (settings.get("openai_model") or "").strip()
         if not base_url or not model:
             raise NotConfiguredError("Set the server URL and model name for the local/OpenAI-compatible backend.")
-        from mirage.ai.openai_compat import OpenAICompatBackend
+        from ubsr.ai.openai_compat import OpenAICompatBackend
 
         return OpenAICompatBackend(base_url=base_url, api_key=settings.get("openai_api_key") or "", model=model)
     raise NotConfiguredError(f"Unknown backend '{kind}'.")

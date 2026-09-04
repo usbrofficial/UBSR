@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import time
 
-from mirage.art import DEFAULT_PALETTES
+from ubsr.art import DEFAULT_PALETTES
 
 SEED_PERSONAS: list[dict] = [
     {
@@ -252,7 +252,7 @@ def seed_database(db, media_dir, render_art=True) -> None:
     """Populate an empty database with the built-in personas and their first posts."""
     if db.persona_count() > 0:
         return
-    from mirage.art import render_post_art
+    from ubsr.art import render_post_art
 
     now = time.time()
     for idx, raw in enumerate(SEED_PERSONAS):

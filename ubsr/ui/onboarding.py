@@ -7,8 +7,9 @@ from typing import Callable, Optional
 
 from gi.repository import Adw, Gtk
 
-from mirage.models import Profile
-from mirage.ui.widgets import clamp, import_media, label, make_avatar, pick_image, set_avatar_image
+from ubsr.config import APP_NAME, APP_TAGLINE
+from ubsr.models import Profile
+from ubsr.ui.widgets import clamp, import_media, label, make_avatar, pick_image, set_avatar_image
 
 
 def clean_handle(text: str) -> str:
@@ -31,6 +32,7 @@ class ProfileForm(Gtk.Box):
         avatar_btn.connect("clicked", self._pick_avatar)
         self.append(avatar_btn)
         change = Gtk.Button(label="Choose profile picture", has_frame=False, halign=Gtk.Align.CENTER)
+        change.add_css_class("flat")
         change.add_css_class("muted")
         change.connect("clicked", self._pick_avatar)
         self.append(change)
@@ -91,10 +93,12 @@ class OnboardingPage(Gtk.Box):
         self.on_done = on_done
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18, margin_top=36, margin_bottom=36,
                        margin_start=24, margin_end=24)
-        body.append(label("Welcome to Mirage", ("onboarding-title",), xalign=0.5))
+        body.append(label(APP_NAME, ("wordmark",), xalign=0.5))
+        body.append(label(APP_TAGLINE, ("tagline",), xalign=0.5))
         intro = label(
             "A photo network where everyone except you is AI. Create your profile to get started. "
             "Everything stays on this computer.", ("muted",), wrap=True, xalign=0.5)
+        intro.set_margin_top(12)
         intro.set_justify(Gtk.Justification.CENTER)
         body.append(intro)
         self.form = ProfileForm(ctx)

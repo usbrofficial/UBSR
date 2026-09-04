@@ -19,8 +19,8 @@ gi.require_version("Pango", "1.0")
 
 from gi.repository import Adw, Gdk, GdkPixbuf, Gio, GLib, Gtk, Pango  # noqa: E402
 
-from mirage.config import MEDIA_DIR  # noqa: E402
-from mirage.models import Post  # noqa: E402
+from ubsr.config import MEDIA_DIR  # noqa: E402
+from ubsr.models import Post  # noqa: E402
 
 # ----------------------------------------------------------------------
 # Textures
@@ -313,7 +313,7 @@ class PostCard(Gtk.Box):
 
         header = Gtk.Box(spacing=10)
         header.add_css_class("post-header")
-        avatar = make_avatar(name, avatar_path, 40)
+        avatar = make_avatar(name, avatar_path, 34)
         header.append(avatar)
         names = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         names.append(label(name, ("handle",)))
@@ -339,18 +339,9 @@ class PostCard(Gtk.Box):
             picture = make_picture(post.image_path)
             self.append(picture)
         else:
-            colors = ["#5f0f40", "#9a031e", "#fb8b24"]
             caption_box = Gtk.Box()
             caption_box.add_css_class("caption-only")
-            provider = Gtk.CssProvider()
-            provider.load_from_data(
-                f".caption-only-{post.id} {{ background: linear-gradient(135deg, {colors[0]}, {colors[2]}); }}".encode()
-            )
-            Gtk.StyleContext.add_provider_for_display(
-                Gdk.Display.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            )
-            caption_box.add_css_class(f"caption-only-{post.id}")
-            caption_box.append(label(post.caption or "…", wrap=True, xalign=0.5))
+            caption_box.append(label(post.caption or "…", wrap=True, xalign=0.0))
             self.append(caption_box)
 
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
@@ -361,7 +352,7 @@ class PostCard(Gtk.Box):
         self._update_like_button()
         self.like_btn.connect("clicked", self._on_like)
         actions.append(self.like_btn)
-        comment_btn = Gtk.Button(icon_name="mirage-comment-symbolic", has_frame=False)
+        comment_btn = Gtk.Button(icon_name="ubsr-comment-symbolic", has_frame=False)
         comment_btn.set_tooltip_text("Comment")
         comment_btn.connect("clicked", lambda *_: self.ctx.open_post(post.id))
         actions.append(comment_btn)
@@ -388,7 +379,7 @@ class PostCard(Gtk.Box):
 
     def _update_like_button(self) -> None:
         liked = self.post.liked_by_me
-        self.like_btn.set_icon_name("mirage-heart-symbolic" if liked else "mirage-heart-outline-symbolic")
+        self.like_btn.set_icon_name("ubsr-heart-symbolic" if liked else "ubsr-heart-outline-symbolic")
         if liked:
             self.like_btn.add_css_class("liked")
         else:

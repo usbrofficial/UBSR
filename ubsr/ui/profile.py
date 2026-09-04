@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from gi.repository import Adw, Gtk
+from gi.repository import Gtk
 
-from mirage.models import Persona, Post, Profile
-from mirage.ui.widgets import (clamp, clear_box, compact_number, esc, label, load_texture, make_avatar,
+from ubsr.models import Persona, Post, Profile
+from ubsr.ui.widgets import (clamp, clear_box, compact_number, esc, label, load_texture, make_avatar,
                                scrolled)
 
 
@@ -95,9 +95,11 @@ class MyProfilePage(Gtk.Box):
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_bottom=24)
         self.header = ProfileHeader()
         edit = Gtk.Button(label="Edit profile")
+        edit.add_css_class("outline")
         edit.connect("clicked", lambda *_: self.ctx.edit_profile())
         self.header.buttons.append(edit)
         prefs = Gtk.Button(label="Preferences")
+        prefs.add_css_class("flat")
         prefs.connect("clicked", lambda *_: self.ctx.open_preferences())
         self.header.buttons.append(prefs)
         body.append(self.header)
@@ -137,11 +139,13 @@ class PersonaProfilePage(Gtk.Box):
         self.follow_btn = Gtk.Button()
         self.follow_btn.connect("clicked", self._toggle_follow)
         self.header.buttons.append(self.follow_btn)
-        msg = Gtk.Button()
-        msg.set_child(Adw.ButtonContent(icon_name="mail-send-symbolic", label="Message"))
+        msg = Gtk.Button(label="Message")
+        msg.add_css_class("outline")
         msg.connect("clicked", lambda *_: self.ctx.open_chat(self.persona_id))
         self.header.buttons.append(msg)
-        remove = Gtk.Button(icon_name="user-trash-symbolic", has_frame=False)
+        remove = Gtk.Button(label="Remove", has_frame=False)
+        remove.add_css_class("flat")
+        remove.add_css_class("muted")
         remove.set_tooltip_text("Remove this person from your network")
         remove.connect("clicked", lambda *_: self.ctx.delete_persona(self.persona_id))
         self.header.buttons.append(remove)
@@ -180,8 +184,10 @@ class PersonaProfilePage(Gtk.Box):
         if persona.followed:
             self.follow_btn.set_label("Following")
             self.follow_btn.remove_css_class("suggested-action")
+            self.follow_btn.add_css_class("outline")
         else:
             self.follow_btn.set_label("Follow")
+            self.follow_btn.remove_css_class("outline")
             self.follow_btn.add_css_class("suggested-action")
 
     def _toggle_follow(self, *_):

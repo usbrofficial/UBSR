@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from gi.repository import Adw, Gtk
 
-from mirage.ui.widgets import PostCard, clamp, clear_box, scrolled
+from ubsr.ui.widgets import PostCard, clamp, clear_box, scrolled
 
 
 class FeedPage(Gtk.Box):
@@ -16,20 +16,21 @@ class FeedPage(Gtk.Box):
 
         toolbar = Gtk.Box(spacing=6, margin_start=12, margin_end=12, margin_top=8, margin_bottom=4)
         self.filter_btn = Gtk.ToggleButton(label="Following")
+        self.filter_btn.add_css_class("flat")
         self.filter_btn.set_tooltip_text("Show only people you follow")
         self.filter_btn.connect("toggled", self._on_filter)
         toolbar.append(self.filter_btn)
         spacer = Gtk.Box(hexpand=True)
         toolbar.append(spacer)
-        new_posts = Gtk.Button(has_frame=True)
-        new_posts.set_child(Adw.ButtonContent(icon_name="view-refresh-symbolic", label="New posts"))
+        new_posts = Gtk.Button(label="New posts")
+        new_posts.add_css_class("flat")
         new_posts.set_tooltip_text("Ask a few people to post something new")
         new_posts.connect("clicked", lambda *_: self.ctx.request_new_posts())
         toolbar.append(new_posts)
         self.append(clamp(toolbar))
 
-        self.list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_start=12, margin_end=12,
-                            margin_top=6, margin_bottom=24)
+        self.list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_start=16, margin_end=16,
+                            margin_top=4, margin_bottom=32)
         self.empty = Adw.StatusPage(
             icon_name="camera-photo-symbolic", title="Nothing here yet",
             description="Follow people in Explore, or press \"New posts\" to wake the feed up.",

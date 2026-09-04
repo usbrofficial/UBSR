@@ -14,16 +14,16 @@ gi.require_version("Adw", "1")
 
 from gi.repository import Adw, Gio, GLib, Gtk  # noqa: E402
 
-from mirage import __version__  # noqa: E402
-from mirage.config import APP_ID, APP_NAME, DB_PATH, MEDIA_DIR, Settings, ensure_dirs  # noqa: E402
-from mirage.db import Database  # noqa: E402
-from mirage.personas import seed_database  # noqa: E402
-from mirage.simulation import World  # noqa: E402
+from ubsr import __version__  # noqa: E402
+from ubsr.config import APP_ID, APP_NAME, APP_TAGLINE, DB_PATH, MEDIA_DIR, Settings, ensure_dirs  # noqa: E402
+from ubsr.db import Database  # noqa: E402
+from ubsr.personas import seed_database  # noqa: E402
+from ubsr.simulation import World  # noqa: E402
 
-log = logging.getLogger("mirage")
+log = logging.getLogger("ubsr")
 
 
-class MirageApplication(Adw.Application):
+class UBSRApplication(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.window = None
@@ -67,7 +67,7 @@ class MirageApplication(Adw.Application):
 
     def do_activate(self):
         if self.window is None:
-            from mirage.ui.window import MainWindow
+            from ubsr.ui.window import MainWindow
 
             self.window = MainWindow(self, self.db, self.settings, self.world)
         self.window.present()
@@ -93,7 +93,7 @@ class MirageApplication(Adw.Application):
     def _on_about(self, *_):
         about = Gtk.AboutDialog(
             transient_for=self.window, modal=True, program_name=APP_NAME, version=__version__,
-            comments="A private, Instagram-style network where everyone except you is AI.",
+            comments=f"{APP_TAGLINE}\nA private photo network where everyone except you is AI.",
             logo_icon_name=APP_ID,
         )
         about.present()
@@ -106,7 +106,7 @@ class MirageApplication(Adw.Application):
 
 
 def main(argv=None) -> int:
-    logging.basicConfig(level=logging.DEBUG if os.environ.get("MIRAGE_DEBUG") else logging.WARNING,
+    logging.basicConfig(level=logging.DEBUG if os.environ.get("UBSR_DEBUG") else logging.WARNING,
                         format="%(levelname)s %(name)s: %(message)s")
-    app = MirageApplication()
+    app = UBSRApplication()
     return app.run(argv if argv is not None else sys.argv)

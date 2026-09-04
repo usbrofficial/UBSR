@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import Iterable, Optional
 
-from mirage.models import Activity, Comment, Conversation, Message, Persona, Post, Profile
+from ubsr.models import Activity, Comment, Conversation, Message, Persona, Post, Profile
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS profile (

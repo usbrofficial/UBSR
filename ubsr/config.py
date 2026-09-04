@@ -7,8 +7,9 @@ import os
 import threading
 from pathlib import Path
 
-APP_ID = "org.ubsr.Mirage"
-APP_NAME = "Mirage"
+APP_ID = "org.ubsr.UBSR"
+APP_NAME = "UBSR"
+APP_TAGLINE = "Union of Black Socialist Republics"
 
 
 def _xdg(var: str, default: Path) -> Path:
@@ -16,16 +17,16 @@ def _xdg(var: str, default: Path) -> Path:
     return Path(value) if value else default
 
 
-_override = os.environ.get("MIRAGE_DATA_DIR")
+_override = os.environ.get("UBSR_DATA_DIR")
 if _override:
     DATA_DIR = Path(_override)
     CONFIG_DIR = Path(_override)
 else:
-    DATA_DIR = _xdg("XDG_DATA_HOME", Path.home() / ".local" / "share") / "mirage"
-    CONFIG_DIR = _xdg("XDG_CONFIG_HOME", Path.home() / ".config") / "mirage"
+    DATA_DIR = _xdg("XDG_DATA_HOME", Path.home() / ".local" / "share") / "ubsr"
+    CONFIG_DIR = _xdg("XDG_CONFIG_HOME", Path.home() / ".config") / "ubsr"
 
 MEDIA_DIR = DATA_DIR / "media"
-DB_PATH = DATA_DIR / "mirage.db"
+DB_PATH = DATA_DIR / "ubsr.db"
 SETTINGS_PATH = CONFIG_DIR / "settings.json"
 
 DEFAULTS: dict = {

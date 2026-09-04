@@ -5,9 +5,9 @@ from __future__ import annotations
 import time
 from typing import Optional
 
-from mirage.models import Persona, Post, Profile
+from ubsr.models import Persona, Post, Profile
 
-NETWORK_NAME = "Mirage"
+NETWORK_NAME = "UBSR"
 
 
 def content_policy(mature: bool) -> str:

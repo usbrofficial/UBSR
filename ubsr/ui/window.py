@@ -6,23 +6,23 @@ from typing import Optional
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
-from mirage.config import DATA_DIR
-from mirage.models import Comment
-from mirage.ui.activity import ActivityPage
-from mirage.ui.compose import ComposeDialog
-from mirage.ui.explore import ExplorePage
-from mirage.ui.feed import FeedPage
-from mirage.ui.messages import MessagesPage
-from mirage.ui.onboarding import EditProfileDialog, OnboardingPage
-from mirage.ui.post_detail import PostDetailPage
-from mirage.ui.profile import MyProfilePage, PersonaProfilePage
-from mirage.ui.settings import PreferencesWindow
-from mirage.ui.widgets import confirm, esc, forget_texture, label
+from ubsr.config import APP_NAME, DATA_DIR
+from ubsr.models import Comment
+from ubsr.ui.activity import ActivityPage
+from ubsr.ui.compose import ComposeDialog
+from ubsr.ui.explore import ExplorePage
+from ubsr.ui.feed import FeedPage
+from ubsr.ui.messages import MessagesPage
+from ubsr.ui.onboarding import EditProfileDialog, OnboardingPage
+from ubsr.ui.post_detail import PostDetailPage
+from ubsr.ui.profile import MyProfilePage, PersonaProfilePage
+from ubsr.ui.settings import PreferencesWindow
+from ubsr.ui.widgets import confirm, esc, forget_texture, label
 
 
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, app, db, settings, world):
-        super().__init__(application=app, title="Mirage")
+        super().__init__(application=app, title="UBSR")
         self.app = app
         self.db = db
         self.settings = settings
@@ -41,7 +41,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.onboarding = OnboardingPage(self, self._finish_onboarding)
         onboarding_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         ob_header = Adw.HeaderBar()
-        ob_header.set_title_widget(label("Mirage", ("brand",), xalign=0.5))
+        ob_header.set_title_widget(label(APP_NAME, ("brand",), xalign=0.5))
         onboarding_box.append(ob_header)
         onboarding_box.append(self.onboarding)
         self.root_stack.add_named(onboarding_box, "onboarding")
@@ -58,7 +58,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.header.pack_end(self.compose_btn)
         menu = Gio.Menu()
         menu.append("Preferences", "app.preferences")
-        menu.append("About Mirage", "app.about")
+        menu.append("About UBSR", "app.about")
         menu.append("Quit", "app.quit")
         menu_btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu)
         self.header.pack_end(menu_btn)
@@ -94,7 +94,7 @@ class MainWindow(Adw.ApplicationWindow):
         tabs.append(self.switcher_bar)
         self.nav.add_named(tabs, "root")
 
-        self.switcher_title = Adw.ViewSwitcherTitle(stack=self.view_stack, title="Mirage")
+        self.switcher_title = Adw.ViewSwitcherTitle(stack=self.view_stack, title=APP_NAME)
         self.switcher_title.bind_property("title-visible", self.switcher_bar, "reveal",
                                           GObject.BindingFlags.SYNC_CREATE)
         self.page_title = Adw.WindowTitle(title="")
@@ -196,6 +196,7 @@ class MainWindow(Adw.ApplicationWindow):
         lbl = label(f"<b>{esc(handle)}</b> {esc(comment.text)}", wrap=True, markup=True)
         lbl.add_css_class("comment-row")
         lbl.set_selectable(True)
+        lbl.set_can_focus(False)
         return lbl
 
     def reload_all(self) -> None:
@@ -361,8 +362,8 @@ class MainWindow(Adw.ApplicationWindow):
 
     def reset_everything(self) -> None:
         self.db.wipe_everything()
-        from mirage.personas import seed_database
-        from mirage.config import MEDIA_DIR
+        from ubsr.personas import seed_database
+        from ubsr.config import MEDIA_DIR
 
         seed_database(self.db, MEDIA_DIR)
         self.settings.set("onboarded", False)

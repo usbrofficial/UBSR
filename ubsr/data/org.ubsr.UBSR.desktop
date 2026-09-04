@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=UBSR
+GenericName=Social Network
+Comment=Union of Black Socialist Republics — a private photo network where everyone except you is AI
+Exec=ubsr
+Icon=org.ubsr.UBSR
+Terminal=false
+Categories=Network;Chat;GTK;
+Keywords=instagram;social;chat;ai;messages;
+StartupNotify=true
+StartupWMClass=org.ubsr.UBSR

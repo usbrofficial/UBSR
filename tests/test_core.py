@@ -1,4 +1,4 @@
-"""Unit tests for the non-UI parts of Mirage. Run with: python3 -m unittest discover tests"""
+"""Unit tests for the non-UI parts of UBSR. Run with: python3 -m unittest discover tests"""
 
 import json
 import os
@@ -7,14 +7,14 @@ import time
 import unittest
 from pathlib import Path
 
-os.environ.setdefault("MIRAGE_DATA_DIR", tempfile.mkdtemp(prefix="mirage-test-"))
+os.environ.setdefault("UBSR_DATA_DIR", tempfile.mkdtemp(prefix="ubsr-test-"))
 
-from mirage.ai import ChatMessage, extract_json  # noqa: E402
-from mirage.art import render_post_art  # noqa: E402
-from mirage.config import Settings  # noqa: E402
-from mirage.db import Database  # noqa: E402
-from mirage.personas import SEED_PERSONAS, normalize_persona, seed_database  # noqa: E402
-from mirage import prompts  # noqa: E402
+from ubsr.ai import ChatMessage, extract_json  # noqa: E402
+from ubsr.art import render_post_art  # noqa: E402
+from ubsr.config import Settings  # noqa: E402
+from ubsr.db import Database  # noqa: E402
+from ubsr.personas import SEED_PERSONAS, normalize_persona, seed_database  # noqa: E402
+from ubsr import prompts  # noqa: E402
 
 
 class FakeBackend:
@@ -52,12 +52,12 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(p2.created_at, p.created_at)
 
     def test_seed_and_feed(self):
-        seed_database(self.db, Path(os.environ["MIRAGE_DATA_DIR"]), render_art=False)
+        seed_database(self.db, Path(os.environ["UBSR_DATA_DIR"]), render_art=False)
         self.assertEqual(self.db.persona_count(), len(SEED_PERSONAS))
         feed = self.db.list_feed()
         self.assertEqual(len(feed), sum(len(p["seed_posts"]) for p in SEED_PERSONAS))
         self.assertTrue(all(feed[i].created_at >= feed[i + 1].created_at for i in range(len(feed) - 1)))
-        seed_database(self.db, Path(os.environ["MIRAGE_DATA_DIR"]), render_art=False)  # idempotent
+        seed_database(self.db, Path(os.environ["UBSR_DATA_DIR"]), render_art=False)  # idempotent
         self.assertEqual(self.db.persona_count(), len(SEED_PERSONAS))
 
     def test_likes_comments_and_delete(self):
@@ -118,13 +118,13 @@ class HelperTests(unittest.TestCase):
         self.assertGreater(data["follower_count"], 0)
 
     def test_render_art(self):
-        out = Path(os.environ["MIRAGE_DATA_DIR"]) / "art.png"
+        out = Path(os.environ["UBSR_DATA_DIR"]) / "art.png"
         path = render_post_art("seed", out, ["#ff0000", "#00ff00", "#0000ff"], size=64)
         self.assertEqual(path, str(out))
         self.assertTrue(out.stat().st_size > 100)
 
     def test_settings(self):
-        path = Path(os.environ["MIRAGE_DATA_DIR"]) / "settings.json"
+        path = Path(os.environ["UBSR_DATA_DIR"]) / "settings.json"
         s = Settings(path)
         self.assertFalse(s.mature)
         s.set("mature_content", True, save=False)
@@ -150,15 +150,15 @@ class WorldTests(unittest.TestCase):
         import gi
 
         gi.require_version("Gtk", "4.0")
-        from mirage.simulation import World, split_bubbles
+        from ubsr.simulation import World, split_bubbles
 
         self.split_bubbles = split_bubbles
         self.db = Database(":memory:")
         seed_database(self.db, Path("/nonexistent"), render_art=False)
         self.db.save_profile("Sam", "sam", "likes cats", None)
-        self.settings = Settings(Path(os.environ["MIRAGE_DATA_DIR"]) / "s2.json")
+        self.settings = Settings(Path(os.environ["UBSR_DATA_DIR"]) / "s2.json")
         self.settings.set("anthropic_api_key", "test", save=False)
-        self.world = World(self.db, self.settings, Path(os.environ["MIRAGE_DATA_DIR"]), time_scale=0.01)
+        self.world = World(self.db, self.settings, Path(os.environ["UBSR_DATA_DIR"]), time_scale=0.01)
         self.backend = FakeBackend()
         self.world._backend = self.backend
         self.world._backend_error = None

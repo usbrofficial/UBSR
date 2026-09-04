@@ -1,5 +1,5 @@
 import sys
 
-from mirage.app import main
+from ubsr.app import main
 
 sys.exit(main(sys.argv))

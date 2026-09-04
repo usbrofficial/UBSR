@@ -6,7 +6,7 @@ from typing import Optional
 
 from gi.repository import Adw, Gtk
 
-from mirage.ui.widgets import import_media, load_texture, pick_image
+from ubsr.ui.widgets import import_media, load_texture, pick_image
 
 
 class ComposeDialog(Adw.Window):
@@ -39,8 +39,8 @@ class ComposeDialog(Adw.Window):
         self.picture.set_visible(False)
         content.append(self.picture)
 
-        self.pick_btn = Gtk.Button()
-        self.pick_btn.set_child(Adw.ButtonContent(icon_name="image-x-generic-symbolic", label="Choose a photo"))
+        self.pick_btn = Gtk.Button(label="Choose a photo")
+        self.pick_btn.add_css_class("outline")
         self.pick_btn.set_halign(Gtk.Align.CENTER)
         self.pick_btn.connect("clicked", self._pick)
         content.append(self.pick_btn)
@@ -69,7 +69,7 @@ class ComposeDialog(Adw.Window):
             texture = load_texture(stored)
             self.picture.set_paintable(texture)
             self.picture.set_visible(texture is not None)
-            self.pick_btn.get_child().set_label("Change photo")
+            self.pick_btn.set_label("Change photo")
 
         pick_image(self, picked)
 

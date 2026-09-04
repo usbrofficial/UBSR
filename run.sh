@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run Mirage straight from this checkout (for development or trying it out without installing).
+# Run UBSR straight from this checkout (for development or trying it out without installing).
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ ! -x "$HERE/.venv/bin/python" ]; then
@@ -7,4 +7,4 @@ if [ ! -x "$HERE/.venv/bin/python" ]; then
   "$HERE/.venv/bin/pip" install --quiet -r "$HERE/requirements.txt"
 fi
 cd "$HERE"
-exec "$HERE/.venv/bin/python" -m mirage "$@"
+exec "$HERE/.venv/bin/python" -m ubsr "$@"

@@ -6,7 +6,7 @@ import json
 import urllib.error
 import urllib.request
 
-from mirage.ai.base import AIError, ChatMessage, RefusalError, encode_image
+from ubsr.ai.base import AIError, ChatMessage, RefusalError, encode_image
 
 
 class OpenAICompatBackend:

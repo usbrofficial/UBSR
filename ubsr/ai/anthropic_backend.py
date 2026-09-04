@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from mirage.ai.base import AIError, ChatMessage, NotConfiguredError, RefusalError, encode_image
+from ubsr.ai.base import AIError, ChatMessage, NotConfiguredError, RefusalError, encode_image
 
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 

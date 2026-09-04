@@ -6,8 +6,8 @@ from typing import Optional
 
 from gi.repository import Adw, GLib, Gtk
 
-from mirage.models import Conversation, Message
-from mirage.ui.widgets import (clear_box, clock_time, esc, import_media, label, make_avatar, make_picture,
+from ubsr.models import Conversation, Message
+from ubsr.ui.widgets import (clear_box, clock_time, esc, import_media, label, make_avatar, make_picture,
                                pick_image, relative_time, scrolled)
 
 
@@ -84,7 +84,7 @@ class ChatView(Gtk.Box):
         self.entry = Gtk.Entry(placeholder_text="Message…", hexpand=True)
         self.entry.connect("activate", self._send)
         entry_bar.append(self.entry)
-        self.send_btn = Gtk.Button(icon_name="mail-send-symbolic")
+        self.send_btn = Gtk.Button(label="Send")
         self.send_btn.add_css_class("suggested-action")
         self.send_btn.connect("clicked", self._send)
         entry_bar.append(self.send_btn)
@@ -101,7 +101,7 @@ class ChatView(Gtk.Box):
         self.name_label.set_text(name)
         self.status_label.set_text(f"@{self.persona.handle}" if self.persona else "")
         self.avatar.set_text(name)
-        from mirage.ui.widgets import set_avatar_image
+        from ubsr.ui.widgets import set_avatar_image
 
         set_avatar_image(self.avatar, self.persona.avatar_path if self.persona else None)
         self.typing_label.set_visible(False)
@@ -146,6 +146,7 @@ class ChatView(Gtk.Box):
             bubble = label(esc(msg.text), ("bubble", "bubble-me" if mine else "bubble-them"), wrap=True,
                            markup=True)
             bubble.set_selectable(True)
+            bubble.set_can_focus(False)
             bubble.set_max_width_chars(48)
             bubble.set_hexpand(False)
             bubble.set_xalign(0.0)
@@ -192,6 +193,7 @@ class MessagesPage(Gtk.Box):
         self.leaflet.set_transition_type(Adw.LeafletTransitionType.SLIDE)
 
         sidebar = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        sidebar.add_css_class("sidebar-pane")
         sidebar.set_size_request(280, -1)
         self.list = Gtk.ListBox()
         self.list.add_css_class("navigation-sidebar")
@@ -205,10 +207,10 @@ class MessagesPage(Gtk.Box):
         sidebar.append(self.sidebar_stack)
         self.sidebar_stack.set_vexpand(True)
         self.leaflet.append(sidebar).set_name("list")
-        self.leaflet.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)).set_navigatable(False)
 
         self.chat = ChatView(ctx)
         self.chat_stack = Gtk.Stack(hexpand=True)
+        self.chat_stack.set_size_request(340, -1)
         self.chat_stack.add_named(self.chat.placeholder, "placeholder")
         self.chat_stack.add_named(self.chat, "chat")
         self.leaflet.append(self.chat_stack).set_name("chat")

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from gi.repository import Adw, Gtk
 
-from mirage.models import Activity
-from mirage.ui.widgets import clamp, clear_box, esc, label, make_avatar, relative_time, scrolled
+from ubsr.models import Activity
+from ubsr.ui.widgets import clamp, clear_box, esc, label, make_avatar, relative_time, scrolled
 
 VERBS = {
     "like": "liked your post",
